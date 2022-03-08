@@ -45,7 +45,7 @@ def save_figure(figure_dir, losses, epoch):
     if not os.path.exists(figure_dir):
             os.makedirs(figure_dir)
     losses = np.array(losses)
-    losses = losses.reshape(-1, 4)
+    losses = losses.reshape(-1, 5)
     x = np.linspace(0, len(losses), len(losses))
     losses_label = ("L1", "KLD", "AC_p", "AC_s")
     plt.figure()
@@ -75,3 +75,9 @@ def save_figure(figure_dir, losses, epoch):
     plt.legend(bbox_to_anchor=(1, 1), loc='upper right', borderaxespad=0)
     plt.savefig(figure_dir + "/" + "epoch_{:05}_KLD".format(epoch) + ".png")
     plt.savefig(figure_dir + "/" + "result_KLD.png")
+
+    plt.figure()
+    plt.plot(x, losses[:,4], label='Total')
+    plt.legend(bbox_to_anchor=(1, 1), loc='upper right', borderaxespad=0)
+    plt.savefig(figure_dir + "/" + "epoch_{:05}_total".format(epoch) + ".png")
+    plt.savefig(figure_dir + "/" + "result_total.png")
