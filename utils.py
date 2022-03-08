@@ -16,6 +16,14 @@ def cross_entropy_loss(logits, labels):
     return tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits = logits, labels = labels))
 """
 
+def normalize_mccs(mc, norm_coefs_path):
+    mcep_normalization_params = np.load(norm_coefs_path)
+    mcep_mean = mcep_normalization_params['mean']
+    mcep_std = mcep_normalization_params['std']
+    mc_norm = (mc  - mcep_mean) / mcep_std
+    return mc_norm
+
+
 def model_save(model, model_dir, model_name):
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)

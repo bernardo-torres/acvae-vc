@@ -3,6 +3,7 @@ import numpy as np
 import os
 import librosa
 from preprocess import wav_padding, world_decompose
+from utils import normalize_mccs
 
 def data_load(batchsize = 1, 
               s = -1, 
@@ -51,7 +52,7 @@ def data_load(batchsize = 1,
 
     return torch.Tensor(x).view(batchsize, 1, num_mcep, n_frames), torch.Tensor(label)
 
-def data_load_2(batchsize = 1, 
+def data_load_preprocessed(batchsize = 1, 
               s = -1, 
               t = -1, 
               nb_label=4, 
@@ -84,11 +85,12 @@ def data_load_2(batchsize = 1,
             #print(frames, os.path.join(voice_path_npy, file))
 
         
-        mcep_normalization_params = np.load(os.path.join(voice_path, "mcep_"+voice_dir_list[label_num]+".npz"))
-        mcep_mean = mcep_normalization_params['mean']
-        mcep_std = mcep_normalization_params['std']
-        mc_norm = (mc_transposed  - mcep_mean) / mcep_std
-            
+        #mcep_normalization_params = np.load(os.path.join(voice_path, "mcep_"+voice_dir_list[label_num]+".npz"))
+        #mcep_mean = mcep_normalization_params['mean']
+        #mcep_std = mcep_normalization_params['std']
+        #mc_norm = (mc_transposed  - mcep_mean) / mcep_std
+        norm_coefs_path = os.path.join(voice_path, "mcep_"+voice_dir_list[label_num]+".npz")
+        mc_norm = normalize_mccs(mc_transposed, norm_coefs_path)   
         start_ = np.random.randint(frames - n_frames + 1)
         end_ = start_ + n_frames
             
