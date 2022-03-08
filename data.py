@@ -81,7 +81,7 @@ def data_load_2(batchsize = 1,
                 file = np.random.choice(files)
             mc_transposed  = np.load(os.path.join(voice_path_npy, file))
             frames = mc_transposed.shape[1]
-            print(frames, os.path.join(voice_path_npy, file))
+            #print(frames, os.path.join(voice_path_npy, file))
 
         
         mcep_normalization_params = np.load(os.path.join(voice_path, "mcep_"+voice_dir_list[label_num]+".npz"))
