@@ -205,10 +205,11 @@ class ACVAE(nn.Module):
 
         return L1 + KLD + AC_1 + AC_2, [L1.item(), KLD.item(), AC_1.item(), AC_2.item()]
 
-    def predict(self, x, label, label_target):
-        
-        shape = x.shape
-        x = x.view(-1, shape[0], shape[1], shape[2])
+    def predict(self, x, label, label_target, change_dims=True):
+
+        if change_dims:
+            shape = x.shape
+            x = x.view(-1, shape[0], shape[1], shape[2])
         x.to(self.device)
         
         mu_enc, logvar_enc = self.encode(x, label)

@@ -23,6 +23,13 @@ def normalize_mccs(mc, norm_coefs_path):
     mc_norm = (mc  - mcep_mean) / mcep_std
     return mc_norm
 
+def unnormalize_mccs(mc, norm_coefs_path):
+    mcep_normalization_params = np.load(norm_coefs_path)
+    mcep_mean = mcep_normalization_params['mean']
+    mcep_std = mcep_normalization_params['std']
+    mc_unnorm = mc * mcep_std + mcep_mean
+    return mc_unnorm
+
 
 def model_save(model, model_dir, model_name):
     if not os.path.exists(model_dir):
@@ -32,6 +39,7 @@ def model_save(model, model_dir, model_name):
 def model_load(model, model_dir, model_name):
     #model = ACVAE(nb_label=nb_label,lambda_p=lambda_p,lambda_s=lambda_s)
     model.load_state_dict(torch.load(os.path.join(model_dir, model_name)))
+    return model
 
 def save_figure(figure_dir, losses, epoch):        
     if not os.path.exists(figure_dir):
